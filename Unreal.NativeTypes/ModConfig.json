@@ -1,0 +1,21 @@
+{
+  "ModId": "Unreal.NativeTypes",
+  "ModName": "Unreal Native Types",
+  "ModAuthor": "Rirurin",
+  "ModVersion": "1.0.0",
+  "ModDescription": "Struct and method definitions for Unreal Engine games",
+  "ModDll": "Unreal.NativeTypes.dll",
+  "ModIcon": "Preview.png",
+  "ModR2RManagedDll32": "x86/Unreal.NativeTypes.dll",
+  "ModR2RManagedDll64": "x64/Unreal.NativeTypes.dll",
+  "ModNativeDll32": "",
+  "ModNativeDll64": "",
+  "IsLibrary": false,
+  "ReleaseMetadataFileName": "Unreal.NativeTypes.ReleaseMetadata.json",
+  "PluginData": {},
+  "IsUniversalMod": false,
+  "ModDependencies": [ "reloaded.sharedlib.hooks" ],
+  "OptionalDependencies": [],
+  "SupportedAppId": [],
+  "ProjectUrl": ""
+}
