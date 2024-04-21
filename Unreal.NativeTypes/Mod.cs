@@ -1,6 +1,7 @@
 ﻿using Reloaded.Hooks.ReloadedII.Interfaces;
 using Reloaded.Memory.SigScan.ReloadedII.Interfaces;
 using Reloaded.Mod.Interfaces;
+using SharedScans.Interfaces;
 using System.Diagnostics;
 using Unreal.NativeTypes.Configuration;
 using Unreal.NativeTypes.Interfaces;

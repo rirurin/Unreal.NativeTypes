@@ -6,6 +6,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unreal.NativeTypes", "Unrea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unreal.NativeTypes.Interfaces", "Unreal.NativeTypes.Interfaces\Unreal.NativeTypes.Interfaces.csproj", "{F6B83073-8233-4B96-BC15-5C6DF54BEF4F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedScans.Interfaces", "include\SharedScans\SharedScans.Interfaces\SharedScans.Interfaces.csproj", "{776FFC89-79F7-4DCA-B5B5-50C91BE2BDD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{F6B83073-8233-4B96-BC15-5C6DF54BEF4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6B83073-8233-4B96-BC15-5C6DF54BEF4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6B83073-8233-4B96-BC15-5C6DF54BEF4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{776FFC89-79F7-4DCA-B5B5-50C91BE2BDD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{776FFC89-79F7-4DCA-B5B5-50C91BE2BDD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{776FFC89-79F7-4DCA-B5B5-50C91BE2BDD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{776FFC89-79F7-4DCA-B5B5-50C91BE2BDD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

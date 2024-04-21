@@ -5,6 +5,31 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+
+	  <!-- Create NuGet Package and include your Documentation/comments inside. -->
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+
+	  <!-- Set to the same as your project name/namespace -->
+	  <PackageId>Unreal.NativeTypes.Interfaces</PackageId>
+
+	  <!-- Use Semantic Versioning -->
+	  <Version>1.0.0</Version>
+	  <Authors>Rirurin</Authors>
+
+	  <!-- Description of your Package -->
+	  <Description>Struct and method defintions for Unreal Engine games</Description>
+
+	  <!-- Link to your Source Code [GitHub Page, etc.] -->
+	  <PackageProjectUrl></PackageProjectUrl>
+	  <RepositoryUrl></RepositoryUrl>
+
+	  <!-- URL to the icon seen for your package in NuGet Search -->
+	  <PackageIconUrl>https://avatars1.githubusercontent.com/u/45473408</PackageIconUrl>
+
+	  <!-- SPDX License Identifier: https://spdx.org/licenses/ -->
+	  <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
 </Project>
