@@ -9,5 +9,5 @@ public interface IMemoryMethods
     public unsafe nint FMemory_Realloc(nint ptr, nint size, uint alignment);
     public unsafe nint FMemory_GetAllocSize(nint ptr);
     public unsafe nint FMemory_Malloc(nint size, uint alignment);
-    public unsafe nint FMemory_Malloc<TType>(uint alignment) where TType : unmanaged;
+    public unsafe TType* FMemory_Malloc<TType>(uint alignment) where TType : unmanaged;
 }

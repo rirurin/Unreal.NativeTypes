@@ -2,7 +2,7 @@
   "ModId": "Unreal.NativeTypes",
   "ModName": "Unreal Native Types",
   "ModAuthor": "Rirurin",
-  "ModVersion": "1.0.1",
+  "ModVersion": "1.0.2",
   "ModDescription": "Struct and method definitions for Unreal Engine games",
   "ModDll": "Unreal.NativeTypes.dll",
   "ModIcon": "Preview.png",

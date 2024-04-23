@@ -59,7 +59,7 @@ namespace Unreal.NativeTypes
         }
         public unsafe delegate void FMallocInternal_Free(nint gMalloc, nint ptr);
 
-        public unsafe nint FMemory_Malloc<TType>(uint alignment) where TType : unmanaged => FMemory_Malloc(sizeof(TType), alignment);
+        public unsafe TType* FMemory_Malloc<TType>(uint alignment) where TType : unmanaged => (TType*)FMemory_Malloc(sizeof(TType), alignment);
         public unsafe nint FMemory_Malloc(nint size, uint alignment)
         {
             if (_mallocInternal == null)
