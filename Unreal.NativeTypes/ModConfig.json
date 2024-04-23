@@ -2,7 +2,7 @@
   "ModId": "Unreal.NativeTypes",
   "ModName": "Unreal Native Types",
   "ModAuthor": "Rirurin",
-  "ModVersion": "1.0.0",
+  "ModVersion": "1.0.1",
   "ModDescription": "Struct and method definitions for Unreal Engine games",
   "ModDll": "Unreal.NativeTypes.dll",
   "ModIcon": "Preview.png",
@@ -15,7 +15,7 @@
   "PluginData": {
     "GitHubRelease": {
       "UserName": "Rirurin",
-      "RepositoryName": "p3rpc.nativetypes",
+      "RepositoryName": "Unreal.NativeTypes",
       "UseReleaseTag": true,
       "AssetFileName": "Mod.zip"
     },

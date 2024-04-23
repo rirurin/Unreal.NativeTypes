@@ -49,14 +49,17 @@ namespace Unreal.NativeTypes
 
         // TODO: GCreateMalloc (although that probably shouldn't be needed,
         // are you really gonna be the first caller of the memory allocator?)
+        public unsafe void FMemory_Free<TType>(TType* ptr) where TType : unmanaged => FMemory_Free((nint)ptr);
         public unsafe void FMemory_Free(nint ptr)
         {
             if (_freeInternal == null)
                 _freeInternal = _hooks.CreateFunctionPtr<FMallocInternal_Free>(**(ulong**)gMallocPtr + 0x30);
             _freeInternal.GetDelegate()(*gMallocPtr, ptr);
+            
         }
         public unsafe delegate void FMallocInternal_Free(nint gMalloc, nint ptr);
 
+        public unsafe nint FMemory_Malloc<TType>(uint alignment) where TType : unmanaged => FMemory_Malloc(sizeof(TType), alignment);
         public unsafe nint FMemory_Malloc(nint size, uint alignment)
         {
             if (_mallocInternal == null)
