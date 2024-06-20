@@ -8,6 +8,6 @@ public interface IMemoryMethods
     public unsafe void FMemory_Free<TType>(TType* ptr) where TType : unmanaged;
     public unsafe nint FMemory_Realloc(nint ptr, nint size, uint alignment);
     public unsafe nint FMemory_GetAllocSize(nint ptr);
-    public unsafe nint FMemory_Malloc(nint size, uint alignment);
-    public unsafe TType* FMemory_Malloc<TType>(uint alignment) where TType : unmanaged;
+    public unsafe nint FMemory_Malloc(nint size, uint alignment = 8);
+    public unsafe TType* FMemory_Malloc<TType>(uint alignment = 8) where TType : unmanaged;
 }

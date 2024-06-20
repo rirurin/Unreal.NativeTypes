@@ -63,12 +63,100 @@ public unsafe struct TMap<KeyType, ValueType>
     }
 }
 
+public interface IMapHashable
+{
+    public uint GetTypeHash();
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public unsafe struct TMapElementHashable<KeyType, ValueType>
+    where KeyType : unmanaged, IEquatable<KeyType>, IMapHashable
+    where ValueType : unmanaged
+{
+    public KeyType Key;
+    public ValueType Value;
+    public int HashNextId;
+    public int HashIndex;
+}
+public unsafe class TMapHashable<KeyType, ValueType>
+    where KeyType : unmanaged, IEquatable<KeyType>, IMapHashable
+    where ValueType : unmanaged
+{
+    // Each instance assumes that values are fixed at particular addresses from init onwards
+    public TArray<TMapElementHashable<KeyType, ValueType>>* Elements;
+    public int** Hashes;
+    public uint* HashSize;
+    public TMapHashable(nint ptr, nint hashArrOffset, nint hashSizeOffset) // Address of start of TMap struct (e.g &class_instance->func_map)
+    {
+        Elements = (TArray<TMapElementHashable<KeyType, ValueType>>*)ptr;
+        Hashes = (int**)(ptr + hashArrOffset);
+        HashSize = (uint*)(ptr + hashSizeOffset);
+    }
+
+    public ValueType* GetByIndex(int idx)
+    {
+        if (idx < 0 || idx > Elements->arr_num) return null;
+        return &Elements->allocator_instance[idx].Value;
+    }
+
+    public ValueType* TryGetLinear(KeyType key)
+    {
+        if (Elements->arr_num == 0 || Elements->allocator_instance == null) return null;
+        ValueType* value = null;
+        for (int i = 0; i < Elements->arr_num; i++)
+        {
+            var currElem = &Elements->allocator_instance[i];
+            if (currElem->Key.Equals(key))
+            {
+                value = &currElem->Value;
+                break;
+            }
+        }
+        return value;
+    }
+
+    public ValueType* TryGetByHash(KeyType key)
+    {
+        ValueType* value = null;
+        // Hash alloc doesn't exist for single element maps,
+        // so fallback to linear search
+        if (*Hashes == null) return TryGetLinear(key);
+        var elementTarget = (*Hashes)[key.GetTypeHash() & (*HashSize - 1)];
+        while (elementTarget != -1)
+        {
+            if (Elements->allocator_instance[elementTarget].Key.Equals(key))
+            {
+                value = &Elements->allocator_instance[elementTarget].Value;
+                break;
+            }
+            elementTarget = Elements->allocator_instance[elementTarget].HashNextId;
+        }
+        return value;
+    }
+}
+
 [StructLayout(LayoutKind.Explicit, Size = 0x8)]
-public unsafe struct FName : IEquatable<FName>
+public unsafe struct FName : IEquatable<FName>, IMapHashable
 {
     [FieldOffset(0x0)] public uint pool_location;
+    [FieldOffset(0x4)] public uint field04;
     public bool Equals(FName other) => pool_location == other.pool_location;
+
+    public uint GetTypeHash()
+    {
+        uint num = pool_location >> 16;
+        uint num2 = pool_location & 0xFFFFu;
+        return (num << 19) + num + (num2 << 16) + num2 + (num2 >> 4) + field04;
+    }
 }
+
+public enum EFindType
+{
+    FNAME_Find,
+    FNAME_Add,
+    FNAME_Replace_Not_Safe_For_Threading
+}
+
 [StructLayout(LayoutKind.Sequential)]
 public unsafe struct FString : IEquatable<FString>
 {
@@ -217,4 +305,56 @@ public unsafe struct FNamePool
         }
     }
 
+}
+
+[StructLayout(LayoutKind.Explicit, Size = 0x260)]
+public unsafe struct FUObjectHashTables
+{
+    // 0x0: Critical Section
+    [FieldOffset(0x28)] public TMap<int, nint> Hashes; // TMap<int, FHashBucket>
+    [FieldOffset(0x78)] public TMap<int, nint> HashesOuter; // TMap<int, FHashBucket>
+}
+
+public unsafe struct HashablePointer : IMapHashable, IEquatable<HashablePointer>
+{
+    public nint Ptr;
+    public HashablePointer(nint ptr) { Ptr = ptr; }
+    public uint GetTypeHash() // FUN_140904980
+    {
+        uint iVar4 = (uint)(Ptr >> 4);
+        uint uVar3 = 0x9e3779b9U - iVar4 ^ iVar4 << 8;
+        uint uVar1 = (uint)-(uVar3 + iVar4) ^ uVar3 >> 0xd;
+        uint uVar5 = (iVar4 - uVar3) - uVar1 ^ uVar1 >> 0xc;
+        uVar3 = (uVar3 - uVar5) - uVar1 ^ uVar5 << 0x10;
+        uVar1 = (uVar1 - uVar3) - uVar5 ^ uVar3 >> 5;
+        uVar5 = (uVar5 - uVar3) - uVar1 ^ uVar1 >> 3;
+        uVar3 = (uVar3 - uVar5) - uVar1 ^ uVar5 << 10;
+        uint ret = ((uVar1 - uVar3) - uVar5) ^ (uVar3 >> 0xf);
+        return ret;
+    }
+    public bool Equals(HashablePointer other) => Ptr == other.Ptr;
+}
+public unsafe struct HashableInt : IMapHashable, IEquatable<HashableInt>
+{
+    public int Value;
+    public HashableInt(int value) { Value = value; }
+    public uint GetTypeHash() => (uint)Value;
+    public bool Equals(HashableInt other) => other.Value == Value;
+}
+public static class TypeExtensions
+{
+    public static HashablePointer AsHashable(this nint ptr) => new HashablePointer(ptr);
+    public static HashableInt AsHashable(this int val) => new HashableInt(val);
+    public static uint HashCombine(uint a, uint b)
+    { // FUN_141cbc830
+        uint uVar1 = a - b ^ b >> 0xd;
+        uint uVar3 = (uint)(-0x61c88647 - uVar1) - b ^ uVar1 << 8;
+        uint uVar2 = (b - uVar3) - uVar1 ^ uVar3 >> 0xd;
+        uVar1 = (uVar1 - uVar3) - uVar2 ^ uVar2 >> 0xc;
+        uVar3 = (uVar3 - uVar1) - uVar2 ^ uVar1 << 0x10;
+        uVar2 = (uVar2 - uVar3) - uVar1 ^ uVar3 >> 5;
+        uVar1 = (uVar1 - uVar3) - uVar2 ^ uVar2 >> 3;
+        uVar3 = (uVar3 - uVar1) - uVar2 ^ uVar1 << 10;
+        return (uVar2 - uVar3) - uVar1 ^ uVar3 >> 0xf;
+    }
 }

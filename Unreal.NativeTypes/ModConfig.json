@@ -2,7 +2,7 @@
   "ModId": "Unreal.NativeTypes",
   "ModName": "Unreal Native Types",
   "ModAuthor": "Rirurin",
-  "ModVersion": "1.0.2",
+  "ModVersion": "1.1.0",
   "ModDescription": "Struct and method definitions for Unreal Engine games",
   "ModDll": "Unreal.NativeTypes.dll",
   "ModIcon": "Preview.png",
@@ -67,7 +67,8 @@
   ],
   "OptionalDependencies": [],
   "SupportedAppId": [
-    "p3r.exe"
+    "p3r.exe",
+    "smt5v-win64-shipping.exe"
   ],
   "ProjectUrl": ""
 }

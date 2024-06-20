@@ -297,8 +297,8 @@ public unsafe struct UClass
     [FieldOffset(0xe8)] public FName class_conf_name;
     [FieldOffset(0x100)] public TArray<UField> net_fields;
     [FieldOffset(0x118)] public UObject* class_default_obj; // Default object of type described in UClass instance
-    //[FieldOffset(0x130)] public TMap func_map;
-    //[FieldOffset(0x180)] public TMap super_func_map;
+    [FieldOffset(0x130)] public TMap<FName, nint> func_map;
+    [FieldOffset(0x180)] public TMap<FName, nint> super_func_map;
     [FieldOffset(0x1d8)] public TArray<IntPtr> interfaces;
     [FieldOffset(0x220)] public TArray<FNativeFunctionLookup> native_func_lookup;
 }
@@ -490,3 +490,30 @@ public struct FLinearColor
     }
 
 }; // Size: 0x10
+
+[StructLayout(LayoutKind.Explicit, Size = 0x10)]
+public unsafe struct FGuid
+{
+
+}
+
+[StructLayout(LayoutKind.Explicit, Size = 0x30)]
+public unsafe struct FTransform
+{
+    [FieldOffset(0x0000)] public FVector4 Rotation;
+    [FieldOffset(0x0010)] public FVector Translation;
+    [FieldOffset(0x0020)] public FVector Scale3D;
+
+    public FTransform()
+    {
+        Rotation = new FVector4(0, 0, 0, 1);
+        Translation = new FVector(0, 0, 0);
+        Scale3D = new FVector(1, 1, 1);
+    }
+    public FTransform(FVector4 rotation, FVector translation, FVector scale)
+    {
+        Rotation = rotation;
+        Translation = translation;
+        Scale3D = scale;
+    }
+}
